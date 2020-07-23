@@ -1,12 +1,31 @@
 import React from 'react';
 
+// 引入Login页面
+import Login from './view/login';
+// 引入首页
+import Home from './view/home';
+
+// 引入路由
+import {
+  HashRouter as Router,
+  Switch,
+  Route,
+  Redirect
+} from 'react-router-dom';
+
+
 function App() {
   return (
     <div className="App">
-      <div>
-        <img className="login" src="http://localhost/login.jpg" />
-        <h1 style={{color:"#fff",marginLeft:"10px"}}>小熊官网</h1>
-      </div>
+      <Router>
+        <Switch>
+          <Route path="/login" component={Login} />
+          <Route path="/index" component={Home} />
+          <Route path="/">
+            <Redirect to="/login" />
+          </Route>
+        </Switch>
+      </Router>
     </div>
   );
 }
