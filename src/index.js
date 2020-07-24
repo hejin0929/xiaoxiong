@@ -1,10 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './App';
+import 'antd/dist/antd.css';
+import zhCN from 'antd/es/locale/zh_CN';
+import { ConfigProvider } from 'antd';
+import './index.css';
+
+// 引入redux的标签
+import { Provider } from 'react-redux';
+import { store } from './utils/redux';
 
 ReactDOM.render(
-  <App />,
+  <Provider store={store}><ConfigProvider locale={zhCN}> <App /> </ConfigProvider></Provider>,
   document.getElementById('root')
 );
 

@@ -1,0 +1,74 @@
+.loginView{
+    background-color: #fff;
+    margin: 0 auto;
+    height: 35vh;
+    width: 30%;
+    border-radius: 5px;
+    ul{
+        padding: 20px;
+        li:nth-child(1){
+            display: flex;
+            align-items: flex-end;
+            position: relative;
+            h2{
+                font-size: 28px;
+            }
+            span{
+                margin-left: 20px;
+                border-left: 1px solid black;
+                padding-left: 10px;
+                font-size: 14px;
+                margin-bottom: 5px;
+            }
+            strong{
+                position: absolute;
+                right: 0;
+                bottom: 5px;
+                font-size: 14px;
+                cursor: pointer;
+                i{
+                    margin-left: 5px;
+                }
+            }
+        }
+        li:nth-child(2){
+            margin-top: 50px;
+            .authcode{
+                display: flex;
+                margin-top: 20px;
+                button{
+                    width: 150px;
+                    border: 1px solid #00ccff;
+                    border-radius: 20px;
+                    margin-left: 10px;
+                    cursor: pointer;
+                }
+            }
+        }
+        li:nth-child(3){
+            margin-top: 20px;
+            button{
+                width: 100%;
+                background-color: #00ccff;
+                border: none;
+                height: 30px;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+            button:hover{
+                background-color: #1890ff;
+            }
+        }
+        li:nth-child(4){
+            margin-top: 20px;
+            text-align: center;
+            cursor: pointer;
+        }
+        li:nth-child(4):hover{
+            color: red;
+        }
+        p{
+            color: red;
+        }
+    }
+}
