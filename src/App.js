@@ -4,6 +4,10 @@ import React from 'react';
 import Login from './view/login';
 // 引入首页
 import Home from './view/home';
+// 引入注册页面
+import Register from './view/login/register';
+// 引入找回密码页面
+import Retrieve from './view/login/retrieve';
 
 // 引入路由
 import {
@@ -21,6 +25,8 @@ function App() {
         <Switch>
           <Route path="/login" component={Login} />
           <Route path="/index" component={Home} />
+          <Route path="/register" component={Register} />
+          <Route path="/retrieve" component={Retrieve} />
           <Route path="/">
             <Redirect to="/login" />
           </Route>

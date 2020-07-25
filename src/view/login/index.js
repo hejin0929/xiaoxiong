@@ -11,6 +11,8 @@ import "../../assets/login.module.scss";
 import { connect } from 'react-redux';
 // 引入axios
 import Axios from '../../utils/axios';
+// 引入登录按钮
+import { Buttons } from '../../component/button';
 
 const { Option } = Select;
 
@@ -19,13 +21,20 @@ function Login(props) {
     // useEffect(() => {
 
     // })
+    function typeLogin() {
+        props.history.push("/register");
+    }
 
-    console.log(props);
+    function forgetPassword() {
+        props.history.push("/retrieve");
+    }
+    // console.log(props);
     return (<div className="login">
         <div>
             <img className="logins" src="http://localhost/login.jpg" alt="小熊官网" />
             <h1 style={{ color: "#fff", marginLeft: "10px" }}>小熊官网</h1>
-            <LoginView />
+            <LoginView forgetPassword={forgetPassword} />
+            <NavLogin type="没有账号" typeLogin={typeLogin} />
         </div>
     </div>)
 }
@@ -94,7 +103,6 @@ export const LoginView = (props) => {
 
     // 输入框输入用户名触发的函数
     function onChangeUsername(v) {
-        console.log(v.target.value);
         if (!v.target.value && !password) {
             setInput(3)
         } else if (!v.target.value && !input === 3) {
@@ -143,20 +151,19 @@ export const LoginView = (props) => {
     }, [authCode])
 
     function getAuthCode() {
-        if(!username){
+        if (!username) {
             setInput(1)
-        }else if (authCode > 0) {
+        } else if (authCode > 0) {
             message.warning("还剩" + authCode + "秒,才能再次发送短信！");
         } else {
             setAuthCode(60)
         }
     }
-
-    console.log(nation);
+    console.log(props);
     return (<div className={IndexCss.loginView}>
         <ul>
             <li>
-                <h2>小熊官网</h2><span>{loginType}</span><strong onClick={setLoginTypeFunc}>{loginType === "账号密码登录" ? "手机验证码登录" : loginType}<i className="iconfont icon-jiantou"></i></strong>
+                <h2>小熊官网</h2><span>{loginType}</span><strong onClick={setLoginTypeFunc}>{loginType === "账号密码登录" ? "手机验证码登录" : "账号密码登录"}<i className="iconfont icon-jiantou"></i></strong>
             </li>
             <li>
 
@@ -193,9 +200,9 @@ export const LoginView = (props) => {
                 {input === 2 || input === 3 ? <p>请输入{loginType === "账号密码登录" ? "密码" : "手机验证码"}</p> : ""}
             </li>
             <li>
-                <button onClick={login}>登录</button>
+                <Buttons disabled={true} onClicks={login} text="登录" />
             </li>
-            <li>
+            <li onClick={() => props.forgetPassword()}>
                 忘记密码？
             </li>
             <li>
@@ -204,6 +211,15 @@ export const LoginView = (props) => {
     </div>)
 }
 
+// 登录以及注册的导航
+export const NavLogin = (props) => {
+    console.log(props);
+    return (
+        <div className={IndexCss.typeLogin} onClick={() => props.typeLogin()}>
+            {props.type} ?
+        </div>
+    )
+}
 
 // 取出redux的token数据
 function getStoreToken(store) {

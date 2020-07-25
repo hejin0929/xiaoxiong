@@ -1,0 +1,30 @@
+.But {
+    width: 100%;
+    background-color: #00ccff;
+    border: none;
+    height: 30px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.But:hover {
+    background-color: #3fa3ff;
+}
+
+.ButDis {
+    width: 100%;
+    background-color: #d0d0d0;
+    border: none;
+    height: 30px;
+    border-radius: 5px;
+}
+
+
+
+.codeBut {
+    width: 150px;
+    border: 1px solid #00ccff;
+    border-radius: 20px;
+    margin-left: 10px;
+    cursor: pointer;
+}
