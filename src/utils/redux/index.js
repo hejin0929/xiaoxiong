@@ -1,23 +1,27 @@
 import { createStore, combineReducers } from 'redux';
 
-const token = "";
+const token = localStorage.getItem("token");
 
-const id = 123
+const validTime = 30;
 
 
 function getToken(state = token, action) {
     switch (action.type) {
-        case "setToken":
-            return action.data;
+        case "refresh":
+            return localStorage.getItem("token");
+        case "clearToken":
+            return null;
         default:
             return state;
     }
 }
 
-function getDay(state = id, action) {
+function getValidTime(state = validTime, action) {
     switch (action.type) {
-        case "setToken":
-            return  action.data;
+        case "setValidTime":
+            return state - 1;
+        case "activate":
+            return 300;
         default:
             return state;
     }
@@ -26,4 +30,4 @@ function getDay(state = id, action) {
 
 
 
-export const store = createStore(combineReducers({getToken, getDay}));
+export const store = createStore(combineReducers({ getToken, getValidTime }));

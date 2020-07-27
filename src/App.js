@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+
+import { connect } from 'react-redux';
 
 // 引入Login页面
 import Login from './view/login';
@@ -18,13 +20,34 @@ import {
 } from 'react-router-dom';
 
 
-function App() {
+function App(props) {
+
+  useEffect(() => {
+    if (props.validTime > 0) {
+      console.log(props.validTime);
+      var interval = setInterval(() => {
+        props.setValidTime({ type: "setValidTime" });
+        window.clearInterval(interval);
+      }, 1000)
+    }
+    return () => {
+      window.clearInterval(interval);
+      if (props.validTime <= 1) {
+        localStorage.setItem("token", null);
+      }
+    }
+  }, [props, props.validTime])
+
+  useEffect(() => {
+    props.setValidTime({ type: "refresh" });
+  },[props])
+
   return (
     <div className="App">
       <Router>
         <Switch>
           <Route path="/login" component={Login} />
-          <Route path="/index" component={Home} />
+          <Route path="/home" component={Home} />
           <Route path="/register" component={Register} />
           <Route path="/retrieve" component={Retrieve} />
           <Route path="/">
@@ -35,5 +58,18 @@ function App() {
     </div>
   );
 }
+function getStoreToken(store) {
+  return {
+    validTime: store.getValidTime
+  }
+}
 
-export default App;
+function setStoreToken(dispatch) {
+  return {
+    setValidTime: (data) => {
+      dispatch(data);
+    }
+  }
+}
+
+export default connect(getStoreToken, setStoreToken)(App);

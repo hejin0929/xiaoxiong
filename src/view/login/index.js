@@ -1,30 +1,24 @@
 // 项目登录页面
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 // 引入样式设置
 import IndexCss from './index.module.scss';
 
-import { Input, Row, Col, Select, message } from 'antd';
+import { Input, Row, Col, Select, message, Spin } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 // 引入穿透样式
 import "../../assets/login.module.scss";
-// 
-import { connect } from 'react-redux';
 // 引入axios
 import Axios from '../../utils/axios';
 // 引入登录按钮
-import { Buttons } from '../../component/button';
+import { Buttons, AuthCodeBtu } from '../../component/button';
 
 const { Option } = Select;
 
 // 创建函数式组件
 function Login(props) {
-    // useEffect(() => {
-
-    // })
     function typeLogin() {
         props.history.push("/register");
     }
-
     function forgetPassword() {
         props.history.push("/retrieve");
     }
@@ -33,7 +27,7 @@ function Login(props) {
         <div>
             <img className="logins" src="http://localhost/login.jpg" alt="小熊官网" />
             <h1 style={{ color: "#fff", marginLeft: "10px" }}>小熊官网</h1>
-            <LoginView forgetPassword={forgetPassword} />
+            <LoginView forgetPassword={forgetPassword} history={props.history} setToken={props.setToken} />
             <NavLogin type="没有账号" typeLogin={typeLogin} />
         </div>
     </div>)
@@ -57,7 +51,9 @@ export const LoginView = (props) => {
     // 定义一个变量控制
     const [input, setInput] = useState(0);
     // 定义一个获取验证码的函数
-    const [authCode, setAuthCode] = useState(0)
+    const [authCode, setAuthCode] = useState("");
+    // 加载状态的控制变量
+    const [spinning, setSpinning] = useState(false);
 
     function setLoginTypeFunc() {
         setInput(0)
@@ -80,7 +76,8 @@ export const LoginView = (props) => {
     }
     // 选择国家触发的函数
     function nationSelect(v) {
-        setState(v)
+        setState(v);
+        console.log(state);
     }
     // 输入手机号码以及用户名触发的函数
     function usernameInput(v) {
@@ -103,6 +100,7 @@ export const LoginView = (props) => {
 
     // 输入框输入用户名触发的函数
     function onChangeUsername(v) {
+        setUsername(v.target.value)
         if (!v.target.value && !password) {
             setInput(3)
         } else if (!v.target.value && !input === 3) {
@@ -136,81 +134,103 @@ export const LoginView = (props) => {
         } else if (!password) {
             setInput(2);
         } else {
-            if (!/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/.test(password)) {
+            if (!/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/.test(password) && loginType === "账号密码登录") {
                 message.warning("密码必须为6-16位的字母以及数字组成");
             } else {
-                console.log(username);
-                console.log(password);
-                console.log(state);
+                // 对登录方式判断 是验证码的方式还是账号密码的方式
+                if (loginType === "账号密码登录") {
+                    setSpinning(true)
+                    Axios("/test/sign_in", { mobile: username, password }).then((res) => {
+                        if (res.status === 1) {
+                            message.success(res.info);
+                            console.log(res.data);
+                            localStorage.setItem("token", res.data);
+                            props.history.push("/home");
+                        } else {
+                            message.warning(res.info);
+                        }
+                        setSpinning(false)
+                    });
+                } else {
+                    setSpinning(true)
+                    if (password === authCode) {
+                        Axios("/test/sign_in").then((res) => {
+                            if (res.status === 1) {
+                                setSpinning(false)
+                                localStorage.setItem("token", res.data)
+                                props.history.push("/home");
+                            }
+                        })
+                    } else {
+                        message.warning("验证码输入错误!");
+                    }
+                }
             }
         }
     }
-    // 验证码的倒计时函数
-    useEffect(() => {
-        if (authCode !== 0) {
-            (setTimeout(() => {
-                setAuthCode(authCode - 1)
-            }, 1000))
-        }
-    }, [authCode])
 
     function getAuthCode() {
-        if (!username) {
-            setInput(1)
-        } else if (authCode > 0) {
-            message.warning("还剩" + authCode + "秒,才能再次发送短信！");
-        } else {
-            setAuthCode(60)
-        }
+        Axios("/test/get_code?mobile=" + username).then((res) => {
+            if (res.status === 1) {
+                setAuthCode(res.info)
+            } else {
+                message.warning(res.info);
+            }
+        })
     }
     return (<div className={IndexCss.loginView}>
-        <ul>
-            <li>
-                <h2>小熊官网</h2><span>{loginType}</span><strong onClick={setLoginTypeFunc}>{loginType === "账号密码登录" ? "手机验证码登录" : "账号密码登录"}<i className="iconfont icon-jiantou"></i></strong>
-            </li>
-            <li>
+        <Spin tip="Loading..." spinning={spinning}>
+            <ul>
+                <li>
+                    <h2>小熊官网</h2><span>{loginType}</span><strong onClick={setLoginTypeFunc}>{loginType === "账号密码登录" ? "手机验证码登录" : "账号密码登录"}<i className="iconfont icon-jiantou"></i></strong>
+                </li>
+                <li>
 
-                {loginType === "账号密码登录" ? <Input onBlur={usernameInput} onChange={onChangeUsername} size="default size" placeholder="请输入用户名登录" prefix={<UserOutlined />} /> :
-                    <Input.Group size="large">
-                        <Row gutter={0}>
-                            <Col span={5}>
-                                <div className="globalcss">
-                                    <Select
-                                        showSearch
-                                        style={{ width: "100%" }}
-                                        placeholder="86"
-                                        optionFilterProp="children"
-                                        onFocus={onFocus}
-                                        onChange={nationSelect}
-                                        filterOption={(input, option) =>
-                                            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                                        }
-                                    >
-                                        {nation.map(v => {
-                                            return <Option key={v.phone} value={v.phone}>{v.name}</Option>
-                                        })}
-                                    </Select>
-                                </div>
-                            </Col>
-                            <Col span={19}>
-                                <Input onBlur={usernameInput} onChange={onChangeUsername} style={{ height: "32px" }} />
-                            </Col>
-                        </Row>
-                    </Input.Group>}
-                {input === 1 || input === 3 ? <p>请输入{loginType === "账号密码登录" ? "账号" : "手机号码"}</p> : ""}
-                {loginType === "账号密码登录" ? <Input.Password onBlur={PasswordInput} onChange={onChangePassword} style={{ marginTop: "20px" }} placeholder="请输入密码" onPressEnter={login} />
-                    : <div className={IndexCss.authcode}><Input onBlur={PasswordInput} onChange={onChangePassword} /><button onClick={getAuthCode}>{authCode !== 0 ? authCode + "s" : "获取验证码"}</button></div>}
-                {input === 2 || input === 3 ? <p>请输入{loginType === "账号密码登录" ? "密码" : "手机验证码"}</p> : ""}
-            </li>
-            <li>
-                <Buttons disabled={true} onClicks={login} text="登录" />
-            </li>
-            <li onClick={() => props.forgetPassword()}>
-                忘记密码？
-            </li>
-            <li>
-            </li>
-        </ul>
+                    {loginType === "账号密码登录" ? <Input onBlur={usernameInput} onChange={onChangeUsername} size="default size" placeholder="请输入用户名登录" prefix={<UserOutlined />} /> :
+                        <Input.Group size="large">
+                            <Row gutter={0}>
+                                <Col span={5}>
+                                    <div className="globalcss">
+                                        <Select
+                                            showSearch
+                                            style={{ width: "100%" }}
+                                            placeholder="86"
+                                            optionFilterProp="children"
+                                            onFocus={onFocus}
+                                            onChange={nationSelect}
+                                            filterOption={(input, option) =>
+                                                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                            }
+                                        >
+                                            {nation.map(v => {
+                                                return <Option key={v.phone} value={v.phone}>{v.name}</Option>
+                                            })}
+                                        </Select>
+                                    </div>
+                                </Col>
+                                <Col span={19}>
+                                    <Input onBlur={usernameInput} onChange={onChangeUsername} style={{ height: "32px" }} />
+                                </Col>
+                            </Row>
+                        </Input.Group>}
+                    {input === 1 || input === 3 ? <p>请输入{loginType === "账号密码登录" ? "账号" : "手机号码"}</p> : ""}
+                    {loginType === "账号密码登录" ? <Input.Password onBlur={PasswordInput} onChange={onChangePassword} style={{ marginTop: "20px" }} placeholder="请输入密码" onPressEnter={login} />
+                        : <div className={IndexCss.authcode}><Input onBlur={PasswordInput} onChange={onChangePassword} /><AuthCodeBtu username={username} onclickCode={getAuthCode} /></div>}
+                    {input === 2 || input === 3 ? <p>请输入{loginType === "账号密码登录" ? "密码" : "手机验证码"}</p> : ""}
+                </li>
+                <li>
+                    <Buttons disabled={true} onClicks={login} text="登录" />
+                </li>
+                {loginType === "账号密码登录" ? <li onClick={() => props.forgetPassword()}>
+                    忘记密码？
+            </li> : <li style={{ color: "#1c9851" }}>
+                        {authCode && "验证码为：" + authCode}
+                    </li>}
+
+                <li>
+                </li>
+            </ul>
+        </Spin>
     </div>)
 }
 
@@ -224,12 +244,4 @@ export const NavLogin = (props) => {
     )
 }
 
-// 取出redux的token数据
-function getStoreToken(store) {
-    return {
-        store: store
-    }
-}
-
-
-export default connect(getStoreToken, null)(Login);
+export default Login;

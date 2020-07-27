@@ -1,7 +1,7 @@
 .loginView {
     background-color: #fff;
     margin: 0 auto;
-    height: 35vh;
+    height: 30%;
     width: 30%;
     border-radius: 5px;
 
@@ -44,14 +44,6 @@
             .authcode {
                 display: flex;
                 margin-top: 20px;
-
-                button {
-                    width: 150px;
-                    border: 1px solid #00ccff;
-                    border-radius: 20px;
-                    margin-left: 10px;
-                    cursor: pointer;
-                }
             }
         }
 
