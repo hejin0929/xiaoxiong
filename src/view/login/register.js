@@ -90,13 +90,16 @@ export default function Register(props) {
             setWarning(2);
         } else {
             if (current === 2) {
-                // console.log(password);
-                Axios("/test/set_password", { password, mobile }).then((res) => {
-                    if (res.status === 1) {
-                        setCurrent(current + 1);
-                        message.success(res.info);
-                    }
-                })
+                if (!/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/.test(password)) {
+                    message.warning("密码必须为6-16位的字母以及数字组成");
+                } else {
+                    Axios("/test/set_password", { password, mobile }).then((res) => {
+                        if (res.status === 1) {
+                            setCurrent(current + 1);
+                            message.success(res.info);
+                        }
+                    })
+                }
             } else if (current === 1) {
                 if (code === aCode) {
                     setCurrent(current + 1);

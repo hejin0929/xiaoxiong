@@ -136,9 +136,13 @@ export const LoginView = (props) => {
         } else if (!password) {
             setInput(2);
         } else {
-            console.log(username);
-            console.log(password);
-            console.log(state);
+            if (!/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/.test(password)) {
+                message.warning("密码必须为6-16位的字母以及数字组成");
+            } else {
+                console.log(username);
+                console.log(password);
+                console.log(state);
+            }
         }
     }
     // 验证码的倒计时函数
@@ -159,7 +163,6 @@ export const LoginView = (props) => {
             setAuthCode(60)
         }
     }
-    console.log(props);
     return (<div className={IndexCss.loginView}>
         <ul>
             <li>
@@ -213,7 +216,7 @@ export const LoginView = (props) => {
 
 // 登录以及注册的导航
 export const NavLogin = (props) => {
-    console.log(props);
+
     return (
         <div className={IndexCss.typeLogin} onClick={() => props.typeLogin()}>
             {props.type} ?

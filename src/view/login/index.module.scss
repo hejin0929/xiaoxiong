@@ -106,20 +106,54 @@
         .registerFrom {
             width: 400px;
             margin: 0 auto;
-            ul{
+
+            ul {
                 margin-bottom: 20px;
-                li{
+
+                li {
                     margin-top: 20px;
-                    p{
+
+                    p {
                         color: red;
                     }
                 }
+
                 margin-top: 50px;
-                li:nth-child(2){
-                    div{
+
+                li:nth-child(2) {
+                    div {
                         display: flex;
                     }
                 }
+            }
+        }
+    }
+}
+
+.retrieve {
+    .progress {
+        margin-top: 50px;
+        padding: 0 20%;
+
+        i {
+            font-size: 38px;
+        }
+        ul{
+            margin-top: 50px;
+            padding: 0 30%;
+            li{
+                margin-bottom: 20px;
+            }
+            li:nth-child(1){
+                strong{
+                    font-size: 18px;
+                }
+            }
+            .Input{
+                display: flex;
+            }
+            .err{
+                color: red;
             }
         }
     }
