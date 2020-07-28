@@ -22,24 +22,25 @@ axios.interceptors.request.use(function (config) {
 // 添加响应拦截器
 axios.interceptors.response.use(function (response) {
     var token = store.getState();
-
     if (token.validTime <= 0) {
         localStorage.setItem("token", null);
         store.dispatch({ type: "clearToken" });
     }
     // console.log(response.config.url);
-    const url = response.config.url
-    if (url !== "/test/sign_in" && url !== "/test/login" && url !== "/test/get_authCode" && url !== "/test/set_password" && url !== "/test/get_code") {
+    const url = response.config.url;
+    var getUrl = -1;
+
+    getUrl = url.indexOf("/test/home");
+    if (getUrl !== -1) {
         store.dispatch({ type: "activate" });
-        // console.log(token.getToken);
         if (token.getToken === null || token.getToken === "null") {
             // alert("堵住")
-            window.location.href = "/"
-            return null;
+            window.location.href = "/";
         }
     } else {
-        console.log(token);
+        store.dispatch({ type: "activate" });
     }
+
     // 对响应数据做点什么
     return response;
 }, function (error) {
@@ -61,6 +62,7 @@ export default function Axios(url, data) {
             axios.get(url).then((res) => {
                 resolve(res.data)
             }).catch((err) => {
+                console.log(err);
                 reject(err)
             })
         }

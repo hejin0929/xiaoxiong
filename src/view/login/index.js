@@ -26,7 +26,7 @@ function Login(props) {
     return (<div className="login">
         <div>
             <img className="logins" src="http://localhost/login.jpg" alt="小熊官网" />
-            <h1 style={{ color: "#fff", marginLeft: "10px" }}>小熊官网</h1>
+            <h1 style={{ color: "#fff", marginLeft: "10px" }}>小熊官网</h1>   
             <LoginView forgetPassword={forgetPassword} history={props.history} setToken={props.setToken} />
             <NavLogin type="没有账号" typeLogin={typeLogin} />
         </div>
@@ -124,6 +124,8 @@ export const LoginView = (props) => {
         }
     }
 
+    // 创建一个定时器轮询，查看token是否存入成功
+
 
 
     function login() {
@@ -142,10 +144,12 @@ export const LoginView = (props) => {
                     setSpinning(true)
                     Axios("/test/sign_in", { mobile: username, password }).then((res) => {
                         if (res.status === 1) {
-                            message.success(res.info);
-                            console.log(res.data);
                             localStorage.setItem("token", res.data);
-                            props.history.push("/home");
+                            setTimeout(() => {
+                                setSpinning(false)
+                                message.success(res.info);
+                                props.history.push("/home");
+                            }, 1100)
                         } else {
                             message.warning(res.info);
                         }
@@ -173,6 +177,7 @@ export const LoginView = (props) => {
         Axios("/test/get_code?mobile=" + username).then((res) => {
             if (res.status === 1) {
                 setAuthCode(res.info)
+                localStorage.setItem("token", res.data);
             } else {
                 message.warning(res.info);
             }

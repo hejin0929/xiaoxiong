@@ -23,8 +23,8 @@ import {
 function App(props) {
 
   useEffect(() => {
-    if (props.validTime > 0) {
-      console.log(props.validTime);
+    if (props.validTime >= 0) {
+      // console.log(props.validTime);
       var interval = setInterval(() => {
         props.setValidTime({ type: "setValidTime" });
         window.clearInterval(interval);

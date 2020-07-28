@@ -21,7 +21,7 @@ function getValidTime(state = validTime, action) {
         case "setValidTime":
             return state - 1;
         case "activate":
-            return 300;
+            return 30;
         default:
             return state;
     }
