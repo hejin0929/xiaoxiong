@@ -80,4 +80,17 @@ button {
   outline: none;
 }
 
-@import "//at.alicdn.com/t/font_1961575_qus3wfgxxl.css";
+/* 轮播图样式 */
+.ant-carousel .slick-slide {
+  text-align: center;
+  height: 300px;
+  background: #364d79;
+  overflow: hidden;
+}
+
+.ant-carousel .slick-slide h3 {
+  color: #fff;
+}
+
+
+@import "//at.alicdn.com/t/font_1961575_ef0pnk35dvb.css";

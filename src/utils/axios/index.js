@@ -9,10 +9,11 @@ import axios from 'axios';
 
 import { store } from '../redux';
 // 添加基地址
-// axios.defaults.baseURL = "http://127.0.0.1:8888";
+axios.defaults.baseURL = "http://127.0.0.1:8080";
 
 // 添加请求拦截器
 axios.interceptors.request.use(function (config) {
+    console.log(config);
     return config;
 }, function (error) {
     // 对请求错误做些什么
@@ -23,10 +24,10 @@ axios.interceptors.request.use(function (config) {
 axios.interceptors.response.use(function (response) {
     var token = store.getState();
     if (token.validTime <= 0) {
-        localStorage.setItem("token", null);
+        localStorage.removeItem("token");
         store.dispatch({ type: "clearToken" });
     }
-    // console.log(response.config.url);
+    
     const url = response.config.url;
     var getUrl = -1;
 

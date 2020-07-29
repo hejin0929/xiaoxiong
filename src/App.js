@@ -10,6 +10,8 @@ import Home from './view/home';
 import Register from './view/login/register';
 // 引入找回密码页面
 import Retrieve from './view/login/retrieve';
+// 引入个人设置的页面
+import SetUp from './view/set_up';
 
 // 引入路由
 import {
@@ -24,7 +26,6 @@ function App(props) {
 
   useEffect(() => {
     if (props.validTime >= 0) {
-      // console.log(props.validTime);
       var interval = setInterval(() => {
         props.setValidTime({ type: "setValidTime" });
         window.clearInterval(interval);
@@ -32,15 +33,15 @@ function App(props) {
     }
     return () => {
       window.clearInterval(interval);
-      if (props.validTime <= 1) {
-        localStorage.setItem("token", null);
+      if (props.validTime <= 0 && window.location.hash.indexOf("login") === -1) {
+        localStorage.removeItem("token");
       }
     }
   }, [props, props.validTime])
 
   useEffect(() => {
     props.setValidTime({ type: "refresh" });
-  },[props])
+  }, [props])
 
   return (
     <div className="App">
@@ -50,8 +51,9 @@ function App(props) {
           <Route path="/home" component={Home} />
           <Route path="/register" component={Register} />
           <Route path="/retrieve" component={Retrieve} />
+          <Route path="/setup" component={SetUp} />
           <Route path="/">
-            <Redirect to="/login" />
+            <Redirect to="/home/:mobile" />
           </Route>
         </Switch>
       </Router>

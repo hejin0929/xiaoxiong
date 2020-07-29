@@ -1,0 +1,34 @@
+.header {
+    line-height: 30px;
+    background-color: #364d79;
+    padding: 0 15%;
+    display: flex;
+    justify-content: space-between;
+
+    .HeaderLeft {
+        display: flex;
+        h2 {
+            color: #fff;
+            font-size: 12px;
+            margin-right: 20px;
+        }
+        a{
+            color: #fff;
+        }
+        a:hover{
+            color: red;
+        }
+        span{
+            color: orange;
+        }
+    }
+    .HeaderRigth{
+        span{
+            color: #fff;
+            cursor: pointer;
+        }
+        span:hover{
+            color: pink;
+        }
+    }
+}

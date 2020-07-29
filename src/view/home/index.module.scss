@@ -1,0 +1,22 @@
+.homeBox {
+    .homeBoxConnter {
+        margin-top: 20px;
+        padding: 0 15%;
+        .nav{
+            // padding: 0 30%;
+            ul{
+                display: flex;
+                justify-content: space-around;
+                li{
+                    cursor: pointer;
+                }
+                li:hover{
+                    color: red;
+                }
+            }
+        }
+        .Slideshow{
+            margin-top: 50px;
+        }
+    }
+}

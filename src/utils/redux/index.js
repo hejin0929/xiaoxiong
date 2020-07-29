@@ -2,8 +2,6 @@ import { createStore, combineReducers } from 'redux';
 
 const token = localStorage.getItem("token");
 
-const validTime = 30;
-
 
 function getToken(state = token, action) {
     switch (action.type) {
@@ -16,12 +14,12 @@ function getToken(state = token, action) {
     }
 }
 
-function getValidTime(state = validTime, action) {
+function getValidTime(state = 30, action) {
     switch (action.type) {
         case "setValidTime":
             return state - 1;
         case "activate":
-            return 30;
+            return 30000;
         default:
             return state;
     }

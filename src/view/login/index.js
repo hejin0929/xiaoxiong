@@ -26,7 +26,7 @@ function Login(props) {
     return (<div className="login">
         <div>
             <img className="logins" src="http://localhost/login.jpg" alt="小熊官网" />
-            <h1 style={{ color: "#fff", marginLeft: "10px" }}>小熊官网</h1>   
+            <h1 style={{ color: "#fff", marginLeft: "10px" }}>小熊官网</h1>
             <LoginView forgetPassword={forgetPassword} history={props.history} setToken={props.setToken} />
             <NavLogin type="没有账号" typeLogin={typeLogin} />
         </div>
@@ -148,7 +148,7 @@ export const LoginView = (props) => {
                             setTimeout(() => {
                                 setSpinning(false)
                                 message.success(res.info);
-                                props.history.push("/home");
+                                props.history.push("/home?mobile=" + username);
                             }, 1100)
                         } else {
                             message.warning(res.info);
@@ -159,10 +159,10 @@ export const LoginView = (props) => {
                     setSpinning(true)
                     if (password === authCode) {
                         Axios("/test/sign_in").then((res) => {
+                            localStorage.setItem("token", res.data);
                             if (res.status === 1) {
-                                setSpinning(false)
-                                localStorage.setItem("token", res.data)
-                                props.history.push("/home");
+                                setSpinning(false);
+                                props.history.push("/home?mobile=" + username);
                             }
                         })
                     } else {
