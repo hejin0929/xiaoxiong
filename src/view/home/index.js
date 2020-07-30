@@ -4,28 +4,21 @@ import Axios from '../../utils/axios';
 import { connect } from 'react-redux';
 // 引入头部组件
 import Header from '../../component/header';
-import { Input, Carousel } from 'antd';
 // 引入样式
-import IndexCss from './index.module.scss'
-
-const { Search } = Input;
+import IndexCss from './index.module.scss';
 function Home(props) {
     // console.log(props);
     // 这个函数是查询用户超时间没请求，就判断其退出登陆，将发送一个请求让路由拦截
-    // useEffect(() => {
-    //     var interval = setInterval(() => {
-    //         Axios("/test/home");
-    //         window.clearInterval(interval);
-    //     }, props.validTime  * 1000)
+    useEffect(() => {
+        var interval = setInterval(() => {
+            Axios("/test/home");
+            window.clearInterval(interval);
+        }, props.validTime  * 1000)
 
-    //     return () => {
-    //         window.clearInterval(interval);
-    //     }
-    // }, [props.validTime]);
-
-    function onChange(params) {
-
-    }
+        return () => {
+            window.clearInterval(interval);
+        }
+    }, [props.validTime]);
 
     return (<div className={IndexCss.homeBox}>
         <Header history={props.history} />

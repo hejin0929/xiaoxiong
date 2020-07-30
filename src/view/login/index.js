@@ -167,6 +167,7 @@ export const LoginView = (props) => {
                         })
                     } else {
                         message.warning("验证码输入错误!");
+                        setSpinning(false);
                     }
                 }
             }

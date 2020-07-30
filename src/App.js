@@ -51,7 +51,7 @@ function App(props) {
           <Route path="/home" component={Home} />
           <Route path="/register" component={Register} />
           <Route path="/retrieve" component={Retrieve} />
-          <Route path="/setup" component={SetUp} />
+          <Route path="/setup/:mobile" component={SetUp} />
           <Route path="/">
             <Redirect to="/home/:mobile" />
           </Route>

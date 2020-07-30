@@ -14,8 +14,10 @@ function Header(props) {
 
     console.log();
 
-    function SetUpPush(){
-        props.history.push("/setup");
+    function SetUpPush() {
+        console.log(props);
+        props.history.push("/setup/mobile=" + props.history.location.search.split("=")[1]);
+        // props.history.push("/setup");
     }
 
     return (<div className={IndexCss.header}>
@@ -24,7 +26,7 @@ function Header(props) {
             {inSgin ? <span><i className="iconfont icon-renyuan"></i>{props.history.location.search.split("=")[1]}</span> : <a href="#/login">去登录?</a>}
         </div>
         <div className={IndexCss.HeaderRigth}>
-            {inSgin && <span onClick={SetUpPush}><i style={{marginRight:"5px"}} className="iconfont icon-shezhi"></i>设置</span>}
+            {inSgin && <span onClick={SetUpPush}><i style={{ marginRight: "5px" }} className="iconfont icon-shezhi"></i>设置</span>}
         </div>
     </div>)
 }
