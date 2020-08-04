@@ -53,8 +53,11 @@ export default function SetUp(props) {
                         <TabPane tab="个人资料" key="1">
                             {data && <PersonalData data={data} setMessagePremise={setMessagePremise} setMessage={setMessage} />}
                         </TabPane>
-                        <TabPane tab="账号设置" key="2">
+                        <TabPane tab="手机换绑" key="2">
                             <IdSet history={props.history} />
+                        </TabPane>
+                        <TabPane tab="重置密码" key="3">
+                            <SetPass history={props.history} />
                         </TabPane>
                     </Tabs>
                 </div>
@@ -232,6 +235,7 @@ function IdSet(props) {
         setCodeInput(v.target.value);
     }
 
+
     return (<div className={IndexCss.idSet}>
         <div>
             <span>手机号换绑</span>
@@ -255,4 +259,60 @@ function IdSet(props) {
             </div>
         </div>
     </div>)
+}
+
+
+// 修改密码
+function SetPass(props) {
+
+    const [data, setData] = useState({});
+    const [Loding, setLoding] = useState(false)
+
+    // 修改密码的确认按钮
+    async function SetPassword() {
+        if (data.newPassword !== data.newPassword_2) {
+            message.warning("两次新密码不一致")
+        } else if (!/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/.test(data.newPassword_2)) {
+            message.warning("密码必须为6-16位的字母以及数字组成");
+        } else {
+            setLoding(true)
+            let res = await Axios(`/test/amend_password?old_password=${data.oldPassword}&new_password=${data.newPassword_2}&mobile=${props.history.location.pathname.split("=")[1]}`);
+            
+            setLoding(false);
+            if (res.status === 1) {
+                props.history.push("/login");
+                message.success(res.info);
+            }else{
+                message.warning(res.info);
+            }
+        }
+    }
+
+    function handleChangeInp1(v) {
+        data.oldPassword = v.target.value;
+        setData(data);
+    }
+    function handleChangeInp2(v) {
+        data.newPassword = v.target.value;
+        setData(data);
+    }
+    function handleChangeInp3(v) {
+        data.newPassword_2 = v.target.value;
+        setData(data);
+    }
+    return (
+        <div className={IndexCss.setPassword}>
+            <span>更换密码</span>
+            <Spin tip="Loading..." spinning={Loding}>
+                <ul>
+                    <li><label>旧密码</label><Input.Password onChange={handleChangeInp1} /></li>
+                    <li><label>新密码</label><Input.Password onChange={handleChangeInp2} /></li>
+                    <li><label>确认新密码</label><Input.Password onChange={handleChangeInp3} /></li>
+                    <li>
+                        <Buttons disabled={true} onClicks={SetPassword} text="提交" />
+                    </li>
+                </ul>
+            </Spin>
+        </div>
+    )
 }
