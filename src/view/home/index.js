@@ -13,23 +13,32 @@ function Home(props) {
         var interval = setInterval(() => {
             Axios("/test/home");
             window.clearInterval(interval);
-        }, props.validTime  * 1000)
+        }, props.validTime  * 1000);
 
         return () => {
             window.clearInterval(interval);
         }
     }, [props.validTime]);
 
+    function routerPush(){
+        if(props.history.location.search || props.history.location.pathname){
+            let url = props.history.location.search.split("=")[1] || props.history.location.pathname.split("=")[1]
+            props.history.push("/setup/mobile=" + url );
+        }else{
+            props.history.push("/login")
+        }
+    }
+
     return (<div className={IndexCss.homeBox}>
-        <Header history={props.history} />
+        <Header routerPush={routerPush} history={props.history} title={<><i style={{ marginRight: "5px" }} className="iconfont icon-shezhi"></i>设置</>} />
         <div className={IndexCss.homeBoxConnter}>
             <div className={IndexCss.nav}>
                 {/* <Search allowClear={true} placeholder="请输入商品进行搜索" onSearch={value => console.log(value)} enterButton="搜索" /> */}
                 <ul>
                     <li>地球村</li>
                     {localStorage.getItem("token") && <><li>好友星球</li>
-                        <li>好友列表</li>
-                        <li>好友聊天</li></>}
+                    <li>好友列表</li>
+                    <li>好友聊天</li></>}
                     <li>同城玩乐</li>
                     <li>音乐世界</li>
                 </ul>

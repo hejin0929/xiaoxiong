@@ -1,10 +1,12 @@
 // 项目的设置页面
 import React, { useState, useEffect, useRef } from 'react';
-import { Spin, Tabs, message } from 'antd';
+import { Spin, Tabs, message, Steps, Input, Result } from 'antd';
 // 引入样式
 import IndexCss from './index.module.scss';
 
 import Axios from '../../utils/axios';
+import Header from '../../component/header';
+import { Buttons, AuthCodeBtu } from '../../component/button';
 const { TabPane } = Tabs;
 
 // 导出函数组件
@@ -13,7 +15,6 @@ export default function SetUp(props) {
     useEffect(() => {
         // console.log(props.history.location);
         Axios("test/home/setup?mobile=" + props.history.location.pathname.split("=")[1]).then((res) => {
-            console.log(res);
             if (res.status === 1) {
                 setData(res.data)
             }
@@ -34,8 +35,14 @@ export default function SetUp(props) {
     function setMessage(data) {
         setData(data)
     }
+    function routerPush() {
+        props.history.push("/home/mobile=" + props.history.location.pathname.split("=")[1]);
+    }
+
+
     return (<div>
         <Spin tip="Loading..." spinning={!data ? true : false}>
+            <Header history={props.history} routerPush={() => routerPush()} title={<><i style={{ marginRight: "5px" }} className="iconfont icon-caidan" />首页</>} />
             <div className={IndexCss.setupBox}>
                 <div className={IndexCss.title}>
                     <img src={data.icon} alt="头像" />
@@ -47,8 +54,8 @@ export default function SetUp(props) {
                             {data && <PersonalData data={data} setMessagePremise={setMessagePremise} setMessage={setMessage} />}
                         </TabPane>
                         <TabPane tab="账号设置" key="2">
-                            Content of Tab Pane 2
-                    </TabPane>
+                            <IdSet history={props.history} />
+                        </TabPane>
                     </Tabs>
                 </div>
             </div>
@@ -77,7 +84,7 @@ function PersonalData(props) {
         obj.email = formData.get("email");
         obj.image = image;
         obj.icon = imgName.name;
-        props.setMessagePremise()
+        props.setMessagePremise();
         Axios("/test/home/upload/head_portrait", obj).then((res) => {
             if (res.status === 1) {
                 props.setMessage(res.data)
@@ -140,5 +147,112 @@ function PersonalData(props) {
                 <input className={IndexCss.cancel} type="reset" />
             </div>
         </form>
+    </div>)
+}
+
+// 账号设置的页面组件
+function IdSet(props) {
+    const [current, setCurrent] = useState(0);
+
+    const [inputPlac, setInputPlac] = useState("请输入旧手机号码");
+    const [mobile, setMobile] = useState(props.history.location.pathname.split("=")[1]);
+    const [code, setCode] = useState("");
+    const [codeInput, setCodeInput] = useState("");
+    const [newMobile, setNewMobile] = useState("");
+    // 输入手机号码的函数
+    function handleInput(v) {
+        if (current === 2) {
+            setNewMobile(v.target.value);
+        } else {
+            setMobile(v.target.value);
+        }
+    }
+
+    // 进度条的判断
+    function onClicks() {
+        switch (current) {
+            case 0:
+                if (!(/^1[3456789]\d{9}$/.test(mobile))) {
+                    message.warning("手机号码有误！请重填");
+                    return false;
+                } else {
+                    setCurrent(current + 1);
+                }
+                break;
+
+            case 1:
+                if (codeInput === code) {
+                    setCurrent(current + 1);
+                    setInputPlac("请输入新的手机号码");
+                    setCode("");
+                } else {
+                    message.warning("验证码输入不正确");
+                }
+                break;
+
+            case 2:
+                if (!(/^1[3456789]\d{9}$/.test(mobile))) {
+                    message.warning("手机号码有误！请重填");
+                    return false;
+                } else {
+                    setCurrent(current + 1);
+                }
+                break;
+            case 3:
+                if (codeInput === code) {
+                    Axios(`/test/replace_mobile?mobile=${mobile}&new_mobile=${newMobile}`).then((res) => {
+                        if (res.status === 1) {
+                            message.success(res.info);
+                            setCurrent(current + 1);
+                        }
+                    })
+                    setCode("");
+                } else {
+                    message.warning("验证码输入不正确");
+                }
+                break;
+
+            default:
+                props.history.push("/login")
+                break;
+        }
+    }
+    // 验证码的获取验证
+    async function onclickCode() {
+        let res = await Axios("/test/get_code?mobile=" + mobile);
+        // console.log(res);
+        if (res.status === 1) {
+            setCode(res.info);
+        } else {
+            message.warning("号码不匹配");
+        }
+    }
+    // 输入验证码的函数
+    function SetCodeInputValue(v) {
+        setCodeInput(v.target.value);
+    }
+
+    return (<div className={IndexCss.idSet}>
+        <div>
+            <span>手机号换绑</span>
+            <div className={IndexCss.steps}>
+                <Steps current={current}>
+                    <Steps.Step title="原手机号" icon={<i className="iconfont icon-shoujihaoma"></i>} />
+                    <Steps.Step title="输入验证码" icon={<i className="iconfont icon-mima"></i>} />
+                    <Steps.Step title="新手机号" icon={<i className="iconfont icon-shoujihaoma"></i>} />
+                    <Steps.Step title="输入验证码" icon={<i className="iconfont icon-mima"></i>} />
+                    <Steps.Step title="绑定成功" icon={<i className="iconfont icon-zhucechenggong"></i>} />
+                </Steps>
+            </div>
+            <div className={IndexCss.from}>
+                {(current === 0 || current === 2) && <Input placeholder={inputPlac} style={{ margin: "20px 0" }} onChange={handleInput} value={current === 2 ? newMobile : mobile} />}
+                {(current === 1 || current === 3) && <div className={IndexCss.authCode}>
+                    <Input onChange={SetCodeInputValue} /><AuthCodeBtu username={current === 2 ? newMobile : mobile} onclickCode={onclickCode} />
+                </div>}
+                {current === 4 && <Result status="success" />}
+                <Buttons disabled={true} onClicks={onClicks} text={current === 4 ? "完成" : "下一步"} />
+                <span style={{ color: "green" }}>{code}</span>
+            </div>
+        </div>
     </div>)
 }

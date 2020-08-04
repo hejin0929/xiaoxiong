@@ -40,7 +40,7 @@ export function AuthCodeBtu(props) {
     function getAuthCode() {
         if (authCode > 0) {
             message.warning("还剩" + authCode + "秒,才能再次发送短信！");
-            setAuthCode(0)
+            // setAuthCode(0)
         } else {
             if (!(/^1[3456789]\d{9}$/.test(props.username))) {
                 message.warning("手机号码有误！请重填")
