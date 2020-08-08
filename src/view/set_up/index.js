@@ -7,6 +7,8 @@ import IndexCss from './index.module.scss';
 import Axios from '../../utils/axios';
 import Header from '../../component/header';
 import { Buttons, AuthCodeBtu } from '../../component/button';
+// 引入from按钮
+import {FromBut} from '../../component/button';
 const { TabPane } = Tabs;
 
 // 导出函数组件
@@ -145,10 +147,7 @@ function PersonalData(props) {
                     <label>联系邮箱</label><input name="email" type="text" defaultValue={props.data.email} />
                 </li>
             </ul>
-            <div className={IndexCss.btu}>
-                <input className={IndexCss.submit} type="submit" />
-                <input className={IndexCss.cancel} type="reset" />
-            </div>
+            <FromBut/>
         </form>
     </div>)
 }

@@ -7,12 +7,17 @@
             ul{
                 display: flex;
                 justify-content: space-around;
+                font-weight: 600;
+                font-size: 14px;
                 li{
                     cursor: pointer;
                 }
                 li:hover{
-                    color: red;
+                    color: orange;
                 }
+            }
+            .navActivate{
+                color: red;
             }
         }
         .Slideshow{

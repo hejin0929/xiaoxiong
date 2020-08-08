@@ -60,6 +60,7 @@ export default function Axios(url, data) {
                 reject(err)
             })
         } else {
+            // 请求失败再发送一次请求
             axios.get(url).then((res) => {
                 resolve(res.data)
             }).catch((err) => {

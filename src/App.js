@@ -25,7 +25,7 @@ import {
 function App(props) {
 
   useEffect(() => {
-    if (props.validTime >= 0) {
+    if (props.validTime >= 0 && localStorage.getItem("token")) {
       var interval = setInterval(() => {
         props.setValidTime({ type: "setValidTime" });
         window.clearInterval(interval);

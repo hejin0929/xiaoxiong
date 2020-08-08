@@ -58,3 +58,12 @@ export function AuthCodeBtu(props) {
         <button className={IndexCss.codeBut} onClick={getAuthCode}>{authCode !== 0 ? authCode + "s" : "获取验证码"}</button>
     </>)
 };
+
+
+// 创建一个from表单的按钮
+export const FromBut = (props) => {
+    return (<div className={IndexCss.btu}>
+        <input className={IndexCss.submit} type="submit" value={props.submit} />
+        <input  onClick={()=> props.resetClick()} className={IndexCss.cancel} type="button" value={props.reset || "取消"} />
+    </div>)
+}

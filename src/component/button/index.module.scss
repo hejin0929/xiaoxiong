@@ -28,3 +28,29 @@
     margin-left: 10px;
     cursor: pointer;
 }
+
+.btu {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    padding: 0 20% 0 0;
+
+    >input {
+        background-color: #dddddd;
+        line-height: 30px;
+        width: 80px;
+        border-radius: 15px;
+        border: none;
+        outline: none;
+        margin-right: 20px;
+        cursor: pointer;
+    }
+
+    .submit:hover {
+        background-color: #1890ff;
+    }
+
+    .cancel:hover {
+        background-color: #ff4d4f;
+    }
+}
