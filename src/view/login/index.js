@@ -24,12 +24,17 @@ function Login(props) {
     function forgetPassword() {
         props.history.push("/retrieve");
     }
+    function signIn(){
+        props.setValidTime({ type: "refresh" });
+    }
+
+
     // console.log(props);
     return (<div className="login">
         <div>
             <img className="logins" src="http://localhost/login.jpg" alt="小熊官网" />
             <h1 style={{ color: "#fff", marginLeft: "10px" }}>小熊官网</h1>
-            <LoginView forgetPassword={forgetPassword} history={props.history} setToken={props.setToken} />
+            <LoginView forgetPassword={forgetPassword} history={props.history} setToken={props.setToken} setValidTime={signIn} />
             <NavLogin type="没有账号" typeLogin={typeLogin} />
         </div>
     </div>)
@@ -147,7 +152,7 @@ export const LoginView = (props) => {
                     Axios("/test/sign_in", { mobile: username, password }).then((res) => {
                         if (res.status === 1) {
                             localStorage.setItem("token", res.data);
-                            props.setValidTime({ type: "refresh" });
+                            props.setValidTime();
                             setSpinning(false)
                             message.success(res.info);
                             props.history.push("/home?mobile=" + username);
@@ -164,7 +169,7 @@ export const LoginView = (props) => {
                             localStorage.setItem("token", res.data);
                             if (res.status === 1) {
                                 setSpinning(false);
-                                props.setValidTime({ type: "refresh" });
+                                props.setValidTime();
                                 props.history.push("/home?mobile=" + username);
                                 localStorage.setItem("user", username);
                             }
