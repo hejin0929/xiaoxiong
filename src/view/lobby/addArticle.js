@@ -89,21 +89,51 @@ function AddArticle(props) {
                 setImgList(imgList);
             })
         }).then(() => {
-            if(imgList)
-            props.CloseDrawer()
+            if (imgList)
+                props.CloseDrawer()
         })
     }
 
     // 表单提交
-    function onFocus(e) {
+    async function onFocus(e) {
         e.preventDefault();
+
+
+        // 提取出表单数据
+        let data = new FormData(e.target);
+
+
+        // console.log(data.get("title"));
+
+        // var xhr = new XMLHttpRequest();
+
+        // xhr.open("POST","http://127.0.0.1:8080/test/home/add_article",true);
+        // xhr.setRequestHeader("Content-Type", "multipart/form-data");
+
+        // xhr.send(data);
+
+        // xhr.onload = function (res) {
+        //     console.log(res);
+        // }
+        // 创建一个对象将数据提交到后端里面
+        let obj = {};
+        obj.title = data.get("title");
+        obj.content = data.get("content");
+        obj.image = imgList;
+        let res = await Axios("/test/home/add_article",obj);
+        if(res.status){
+            message.success(res.info);
+            props.CloseDrawer();
+        }else{
+            message.error(res.info);
+        }
     }
 
     return (<div className={IndexCss.AddArticle}>
-        <form ref={fromData} onFocus={onFocus}>
+        <form ref={fromData} onSubmit={onFocus} >
             <ul>
                 <li>
-                    <label>标题</label><input />
+                    <label>标题</label><input name="title" />
                 </li>
                 <li>
                     <div className={IndexCss.imgBox}>
@@ -125,7 +155,7 @@ function AddArticle(props) {
                     </div>
                 </li>
                 <li>
-                    <label>内容:</label><textarea rows={10} />
+                    <label>内容:</label><textarea name="content" rows={10} />
                 </li>
                 <div style={{ width: "40%" }}>
                     <FromBut resetClick={resetClick} submit="发布" />

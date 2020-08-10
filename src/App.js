@@ -29,12 +29,13 @@ function App(props) {
       var interval = setInterval(() => {
         props.setValidTime({ type: "setValidTime" });
         window.clearInterval(interval);
-      }, 1000)
+      }, 10000)
     }
     return () => {
       window.clearInterval(interval);
       if (props.validTime <= 0 && window.location.hash.indexOf("login") === -1) {
         localStorage.removeItem("token");
+        localStorage.removeItem("user");
       }
     }
   }, [props, props.validTime])

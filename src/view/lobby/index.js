@@ -1,11 +1,14 @@
 // 展览大厅页面
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import IndexCss from './index.module.scss';
 
 import { Drawer } from 'antd';
 
 import AddArticle from './addArticle';
+
+// 引入Axios请求
+import Axios from '../../utils/axios';
 
 function Lobby() {
     const [visible, setVisible] = useState(false);
@@ -17,6 +20,13 @@ function Lobby() {
     function handleDrawer(params) {
         setVisible(true)
     }
+
+    // 初次渲染页面时触发的函数
+    useEffect(()=>{
+        Axios("/test/home/get_home").then((res)=>{
+            console.log(res);
+        })
+    },[])
 
     return (<div className={IndexCss.lobby}>
         <div className={IndexCss.title}>
@@ -43,7 +53,7 @@ function Lobby() {
             visible={visible}
             width="80%"
         >
-            <AddArticle CloseDrawer={onClose}/>
+            <AddArticle CloseDrawer={onClose} />
         </Drawer>
     </div>)
 }

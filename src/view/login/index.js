@@ -149,6 +149,7 @@ export const LoginView = (props) => {
                                 setSpinning(false)
                                 message.success(res.info);
                                 props.history.push("/home?mobile=" + username);
+                                localStorage.setItem("user",username);
                             }, 1100)
                         } else {
                             message.warning(res.info);
@@ -163,6 +164,7 @@ export const LoginView = (props) => {
                             if (res.status === 1) {
                                 setSpinning(false);
                                 props.history.push("/home?mobile=" + username);
+                                localStorage.setItem("user",username);
                             }
                         })
                     } else {
