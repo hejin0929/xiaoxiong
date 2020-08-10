@@ -22,11 +22,13 @@ function Lobby() {
     }
 
     // 初次渲染页面时触发的函数
-    useEffect(()=>{
-        Axios("/test/home/get_home").then((res)=>{
-            console.log(res);
-        })
-    },[])
+    useEffect(() => {
+        if (localStorage.getItem("token")) {
+            Axios("/test/home/get_home").then((res) => {
+                console.log(res);
+            })
+        }
+    }, [])
 
     return (<div className={IndexCss.lobby}>
         <div className={IndexCss.title}>

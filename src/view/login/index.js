@@ -11,6 +11,8 @@ import "../../assets/login.module.scss";
 import Axios from '../../utils/axios';
 // 引入登录按钮
 import { Buttons, AuthCodeBtu } from '../../component/button';
+// 引入加强redux的函数
+import { connect } from 'react-redux';
 
 const { Option } = Select;
 
@@ -145,12 +147,11 @@ export const LoginView = (props) => {
                     Axios("/test/sign_in", { mobile: username, password }).then((res) => {
                         if (res.status === 1) {
                             localStorage.setItem("token", res.data);
-                            setTimeout(() => {
-                                setSpinning(false)
-                                message.success(res.info);
-                                props.history.push("/home?mobile=" + username);
-                                localStorage.setItem("user",username);
-                            }, 1100)
+                            props.setValidTime({ type: "refresh" });
+                            setSpinning(false)
+                            message.success(res.info);
+                            props.history.push("/home?mobile=" + username);
+                            localStorage.setItem("user", username);
                         } else {
                             message.warning(res.info);
                         }
@@ -163,8 +164,9 @@ export const LoginView = (props) => {
                             localStorage.setItem("token", res.data);
                             if (res.status === 1) {
                                 setSpinning(false);
+                                props.setValidTime({ type: "refresh" });
                                 props.history.push("/home?mobile=" + username);
-                                localStorage.setItem("user",username);
+                                localStorage.setItem("user", username);
                             }
                         })
                     } else {
@@ -252,4 +254,16 @@ export const NavLogin = (props) => {
     )
 }
 
-export default Login;
+
+
+// redux的修改函数
+function setStoreToken(dispatch) {
+    return {
+        setValidTime: (data) => {
+            dispatch(data);
+        }
+    }
+}
+
+
+export default connect(null, setStoreToken)(Login);
