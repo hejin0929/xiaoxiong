@@ -155,7 +155,7 @@ export const LoginView = (props) => {
                             props.setValidTime();
                             setSpinning(false)
                             message.success(res.info);
-                            props.history.push("/home?mobile=" + username);
+                            props.history.push("/home");
                             localStorage.setItem("user", username);
                         } else {
                             message.warning(res.info);
@@ -170,7 +170,7 @@ export const LoginView = (props) => {
                             if (res.status === 1) {
                                 setSpinning(false);
                                 props.setValidTime();
-                                props.history.push("/home?mobile=" + username);
+                                props.history.push("/home");
                                 localStorage.setItem("user", username);
                             }
                         })

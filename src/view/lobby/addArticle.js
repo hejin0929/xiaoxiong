@@ -120,11 +120,12 @@ function AddArticle(props) {
         obj.title = data.get("title");
         obj.content = data.get("content");
         obj.image = imgList;
-        let res = await Axios("/test/home/add_article",obj);
-        if(res.status){
+        obj.uid = localStorage.getItem("user");
+        let res = await Axios("/test/home/add_article", obj);
+        if (res.status) {
             message.success(res.info);
             props.CloseDrawer();
-        }else{
+        } else {
             message.error(res.info);
         }
     }
