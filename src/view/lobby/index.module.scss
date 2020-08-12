@@ -215,8 +215,11 @@
     }
     .contentBox{
         margin-left: 105px;
+        >p{
+            margin-bottom: 20px;
+        }
         .imageList{
-            margin: 20px 0;
+            margin-bottom: 20px;
             display: flex;
             .imgBox{
                 width: 150px;

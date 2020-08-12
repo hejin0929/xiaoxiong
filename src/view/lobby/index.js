@@ -44,7 +44,7 @@ function Lobby() {
     return (<Spin tip="Loading..." spinning={!data.length ? true : false}><div className={IndexCss.lobby}>
         <div className={IndexCss.title}>
             <div className={IndexCss.write} onClick={handleDrawer}>
-                <i className="iconfont icon-pen" />写攻咯?
+                <i className="iconfont icon-pen" />发布瞬间?
             </div>
             <div className={IndexCss.filtrate}>
                 <ul>
