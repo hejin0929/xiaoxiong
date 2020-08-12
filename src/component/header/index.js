@@ -17,7 +17,7 @@ function Header(props) {
     return (<div className={IndexCss.header}>
         <div className={IndexCss.HeaderLeft}>
             <h2>欢迎来到小熊官网</h2>
-            {inSgin ? <span><i className="iconfont icon-renyuan"></i>{props.history.location.pathname.split("=")[1] || props.history.location.search.split("=")[1]}</span> : <a href="#/login">去登录?</a>}
+            {inSgin ? <span><i className="iconfont icon-renyuan"></i>{localStorage.getItem("user")}</span> : <a href="#/login">去登录?</a>}
         </div>
         <div className={IndexCss.HeaderRigth}>
               {inSgin && <span onClick={()=>props.routerPush()}>{props.title}</span>}

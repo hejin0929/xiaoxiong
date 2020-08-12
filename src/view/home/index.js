@@ -58,7 +58,7 @@ function Home(props) {
                 </ul>
             </div>
             <div className={IndexCss.Slideshow}>
-                <Lobby />
+                <Lobby history={props.history} />
             </div>
         </div>
     </div>)

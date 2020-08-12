@@ -9,7 +9,7 @@ import axios from 'axios';
 
 import { store } from '../redux';
 // 添加基地址
-axios.defaults.baseURL = "http://jgnb.8li0.com";
+axios.defaults.baseURL = "http://127.0.0.1:8080";
 
 // 添加请求拦截器
 axios.interceptors.request.use(function (config) {

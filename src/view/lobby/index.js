@@ -13,18 +13,24 @@ import Axios from '../../utils/axios';
 // 引入moment格式化日期
 import moment from 'moment';
 
-function Lobby() {
+function Lobby(props) {
     const [visible, setVisible] = useState(false);
 
     // 创建一个变量接受数据
     const [data, setData] = useState([]);
 
     function onClose() {
+        setData([])
         setVisible(false)
     }
 
-    function handleDrawer(params) {
-        setVisible(true)
+    // 当用户点击发布瞬间时判断是否登录 没有则跳到登录页面
+    function handleDrawer() {
+        if(localStorage.getItem("token")){
+            setVisible(true)
+        }else{
+             props.history.push("/login");
+        }
     }
 
     // 初次渲染页面时触发的函数
@@ -39,7 +45,7 @@ function Lobby() {
             }
         })
         // }
-    }, [])
+    }, [visible])
 
     return (<Spin tip="Loading..." spinning={!data.length ? true : false}><div className={IndexCss.lobby}>
         <div className={IndexCss.title}>
