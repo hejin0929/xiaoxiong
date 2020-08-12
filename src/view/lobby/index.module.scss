@@ -178,8 +178,17 @@
 .template {
     margin-top: 20px;
     margin-bottom: 50px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ccc;
     .header {
         display: flex;
+        p{
+            display: flex;
+            span{
+                display: flex;
+                align-items: center;
+            }
+        }
 
         .headerImg {
             width: 80px;
@@ -190,7 +199,7 @@
         .message {
             margin-left: 20px;
             header {
-                font-size: 22px;
+                font-size: 20px;
                 font-weight: 800;
             }
             p{
@@ -202,6 +211,46 @@
                     }
                 }
             }
+        }
+    }
+    .contentBox{
+        margin-left: 105px;
+        .imageList{
+            margin: 20px 0;
+            display: flex;
+            .imgBox{
+                width: 150px;
+                height: 150px;
+                overflow: hidden;
+                margin-left: 20px;
+                img{
+                    width: 100%;
+                    height: 100%;
+                    background-color: #364d79;
+                }
+            }
+
+            .imgBox:nth-child(1){
+                margin-left: 0;
+            }
+
+        }
+        .appraise{
+            display: flex;
+            align-items: center;
+            i,span{
+                color: orange;
+                cursor: pointer;
+            }
+            span{
+                margin: 0 5px 0 3px;
+                font-size: 16px;
+            }
+            p:hover{
+                color: red;
+                border-bottom: 1px solid red;
+            }
+
         }
     }
 }

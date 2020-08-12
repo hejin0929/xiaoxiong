@@ -117,7 +117,7 @@ export default function Register(props) {
 
 
     return (<div className={IndexCss.register}>
-        <img className="logins" src="http://localhost/login.jpg" alt="小熊官网" />
+        <img className="logins" src="http://jgnb.8li0.com/login.jpg" alt="小熊官网" />
         <NavLogin type="已有账号" typeLogin={typeLogin} />
         <div className={IndexCss.progress}>
             <Steps current={current}>

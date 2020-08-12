@@ -32,7 +32,7 @@ function Login(props) {
     // console.log(props);
     return (<div className="login">
         <div>
-            <img className="logins" src="http://localhost/login.jpg" alt="小熊官网" />
+            <img className="logins" src="http://jgnb.8li0.com/login.jpg" alt="小熊官网" />
             <h1 style={{ color: "#fff", marginLeft: "10px" }}>小熊官网</h1>
             <LoginView forgetPassword={forgetPassword} history={props.history} setToken={props.setToken} setValidTime={signIn} />
             <NavLogin type="没有账号" typeLogin={typeLogin} />

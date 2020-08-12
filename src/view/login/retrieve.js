@@ -78,7 +78,7 @@ export default function Retrieve(props) {
     }
 
     return (<div className={IndexCss.retrieve}>
-        <img className="logins" src="http://localhost/login.jpg" alt="小熊官网" />
+        <img className="logins" src="http://jgnb.8li0.com/login.jpg" alt="小熊官网" />
         <NavLogin type="去登录" typeLogin={typeLogin} />
         <div className={IndexCss.progress}>
             <Steps current={current}>

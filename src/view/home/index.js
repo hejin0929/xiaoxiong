@@ -32,7 +32,7 @@ function Home(props) {
 
     function routerPush() {
         if (props.history.location.search || props.history.location.pathname) {
-            let url = props.history.location.search.split("=")[1] || props.history.location.pathname.split("=")[1];
+            let url = localStorage.getItem("user");
             props.history.push("/setup/mobile=" + url);
         } else {
             props.history.push("/login");
