@@ -1,0 +1,17 @@
+.issue{
+    input{
+        border-bottom: 1px solid orange;
+        width: 300px;
+    }
+    button{
+        margin-left: 5px;
+        background-color: #00abdd;
+        padding: 5px 8px;
+        border-radius: 3px;
+    }
+    button:hover{
+        background-color: #364d79;
+        color: beige;
+        cursor: pointer;
+    }
+}

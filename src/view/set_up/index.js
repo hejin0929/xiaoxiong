@@ -84,7 +84,7 @@ function PersonalData(props) {
 
         let obj = {}
         obj.mobile = props.data.mobile;
-        obj.user_name = formData.get("user_name");
+        obj.username = formData.get("username");
         obj.message = formData.get("message");
         obj.email = formData.get("email");
         obj.image = image;
@@ -138,7 +138,7 @@ function PersonalData(props) {
                     <label>手机号</label><input name="mobile" type="text" disabled={true} defaultValue={props.data.mobile} />
                 </li>
                 <li>
-                    <label>呢称</label><input name="user_name" type="text" defaultValue={props.data.user_name} />
+                    <label>呢称</label><input name="username" type="text" defaultValue={props.data.username} />
                 </li>
                 <li>
                     <label>个人介绍</label><textarea name="message" rows="5" defaultValue={props.data.message} />
